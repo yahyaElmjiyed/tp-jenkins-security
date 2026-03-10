@@ -28,13 +28,13 @@ pipeline {
             steps {
                 echo 'Running OWASP Dependency Check...'
                 sh '''
-                mkdir -p odc-data
+                mkdir -p dependency-check-report
                 dependency-check \
                 --project "TP-Jenkins-Security" \
                 --scan . \
                 --format HTML \
                 --out dependency-check-report \
-                --data odc-data
+                --noupdate
                 '''
             }
         }
@@ -51,7 +51,6 @@ pipeline {
         success {
             echo 'Pipeline executed successfully!'
         }
-
         failure {
             echo 'Pipeline failed!'
         }
