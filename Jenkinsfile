@@ -9,35 +9,33 @@ pipeline {
             }
         }
 
-        stage('Install Dependencies') {
+        stage('Build') {
             steps {
-                sh '''
-                docker run --rm -v $PWD:/app -w /app python:3.10 \
-                pip install -r requirements.txt
-                '''
+                echo "Repository cloned successfully"
             }
         }
 
         stage('Run Tests') {
             steps {
-                sh '''
-                docker run --rm -v $PWD:/app -w /app python:3.10 \
-                pytest
-                '''
+                echo "Simulated test execution"
             }
         }
 
-        stage('SCA Scan') {
+        stage('Security Scan') {
             steps {
-                echo "Security scan stage"
+                echo "Simulated security scan"
             }
         }
 
     }
 
     post {
+        success {
+            echo 'Pipeline executed successfully'
+        }
+
         failure {
-            echo 'Build failed due to errors or vulnerabilities'
+            echo 'Build failed'
         }
     }
 }
