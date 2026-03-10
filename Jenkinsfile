@@ -5,25 +5,41 @@ pipeline {
 
         stage('Clone Repository') {
             steps {
+                echo 'Cloning repository...'
                 git branch: 'main', url: 'https://github.com/yahyaElmjiyed/tp-jenkins-security.git'
             }
         }
 
-        stage('Build') {
+        stage('Install Dependencies') {
             steps {
-                echo "Repository cloned successfully"
+                echo 'Installing Python dependencies...'
+                sh 'pip3 install -r requirements.txt --break-system-packages'
             }
         }
 
         stage('Run Tests') {
             steps {
-                echo "Simulated test execution"
+                echo 'Running pytest tests...'
+                sh 'pytest'
             }
         }
 
         stage('Security Scan') {
             steps {
-                echo "Simulated security scan"
+                echo 'Running OWASP Dependency Check...'
+                sh '''
+                dependency-check \
+                --project "TP-Jenkins-Security" \
+                --scan . \
+                --format HTML \
+                --out dependency-check-report
+                '''
+            }
+        }
+
+        stage('Archive Report') {
+            steps {
+                archiveArtifacts artifacts: 'dependency-check-report/**', fingerprint: true
             }
         }
 
@@ -31,11 +47,11 @@ pipeline {
 
     post {
         success {
-            echo 'Pipeline executed successfully'
+            echo 'Pipeline executed successfully!'
         }
 
         failure {
-            echo 'Build failed'
+            echo 'Pipeline failed!'
         }
     }
 }
