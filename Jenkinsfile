@@ -1,9 +1,5 @@
 pipeline {
-    agent {
-        docker {
-            image 'python:3.10'
-        }
-    }
+    agent any
 
     stages {
 
@@ -15,21 +11,28 @@ pipeline {
 
         stage('Install Dependencies') {
             steps {
-                sh 'pip install -r requirements.txt'
+                sh '''
+                docker run --rm -v $PWD:/app -w /app python:3.10 \
+                pip install -r requirements.txt
+                '''
             }
         }
 
         stage('Run Tests') {
             steps {
-                sh 'pytest'
+                sh '''
+                docker run --rm -v $PWD:/app -w /app python:3.10 \
+                pytest
+                '''
             }
         }
 
         stage('SCA Scan') {
             steps {
-                echo "Dependency check stage"
+                echo "Security scan stage"
             }
         }
+
     }
 
     post {
