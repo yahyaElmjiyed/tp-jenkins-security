@@ -36,8 +36,7 @@ pipeline {
                 --scan . \
                 --format HTML \
                 --out dependency-check-report \
-                --data dependency-check-data \
-                --noupdate
+                --data dependency-check-data
                 '''
             }
         }
