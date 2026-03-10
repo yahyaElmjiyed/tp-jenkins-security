@@ -5,7 +5,7 @@ pipeline {
 
         stage('Clone Repository') {
             steps {
-                git 'https://github.com/yahyaElmjiyed/tp-jenkins-security.git'
+                git branch: 'main', url: 'https://github.com/yahyaElmjiyed/tp-jenkins-security.git'
             }
         }
 
