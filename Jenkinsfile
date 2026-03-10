@@ -29,11 +29,14 @@ pipeline {
                 echo 'Running OWASP Dependency Check...'
                 sh '''
                 mkdir -p dependency-check-report
+                mkdir -p dependency-check-data
+
                 dependency-check \
                 --project "TP-Jenkins-Security" \
                 --scan . \
                 --format HTML \
                 --out dependency-check-report \
+                --data dependency-check-data \
                 --noupdate
                 '''
             }
